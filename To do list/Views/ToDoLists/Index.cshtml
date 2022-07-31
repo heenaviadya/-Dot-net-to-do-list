@@ -1,0 +1,88 @@
+﻿@using System.Security.Claims
+@model IEnumerable<To_do_list.Models.ToDoList>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <h1>To do List</h1>
+    </div>
+    <div class="col-md-6 text-end">
+        <a asp-action="Create" class="btn btn-primary btn-success">
+            <i class="fa-solid fa-plus"></i>
+            Create New
+        </a>
+    </div>
+
+</div>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TaskName)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Deadline)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                Actions
+            </th>
+
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            @if (item.Id == User.FindFirstValue(ClaimTypes.NameIdentifier))
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TaskName)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Deadline)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        <div class="btn-group btn-group-sm">
+
+                            <a asp-action="Edit" asp-route-id="@item.TaskId" class="btn btn-primary">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </a>
+
+                            <a asp-action="Details" asp-route-id="@item.TaskId" class="btn btn-success">
+                                <i class="fa-solid fa-list"></i>
+                            </a>
+                            <form asp-action="Delete" asp-route-id="@item.TaskId">
+                                <button type="submit" class="btn btn-danger"
+                                onclick=" return confirm('Are you sure to delete this record?')">
+                                    <i class="far fa-trash-alt"></i>
+                                </button>
+                            </form>
+
+                        </div>
+
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
